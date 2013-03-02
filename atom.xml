@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://meloonly.github.com/atom.xml" rel="self"/>
-  <link href="http://meloonly.github.com/"/>
-  <updated>2013-01-20T21:15:43+08:00</updated>
-  <id>http://meloonly.github.com/</id>
+  <title><![CDATA[I konw I know]]></title>
+  <link href="http://meloonly.com/atom.xml" rel="self"/>
+  <link href="http://meloonly.com/"/>
+  <updated>2013-03-02T20:27:09+08:00</updated>
+  <id>http://meloonly.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[meloonly]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[post title]]></title>
-    <link href="http://meloonly.github.com/blog/2013/01/20/post-title/"/>
-    <updated>2013-01-20T21:15:00+08:00</updated>
-    <id>http://meloonly.github.com/blog/2013/01/20/post-title</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[post hi]]></title>
-    <link href="http://meloonly.github.com/blog/2013/01/20/post-hi/"/>
-    <updated>2013-01-20T20:23:00+08:00</updated>
-    <id>http://meloonly.github.com/blog/2013/01/20/post-hi</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
 </feed>

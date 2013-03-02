@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://meloonly.github.com/sitemap.xml 
+Sitemap: http://meloonly.com/sitemap.xml 
