@@ -4,7 +4,7 @@
   <title><![CDATA[I konw I know]]></title>
   <link href="http://meloonly.com/atom.xml" rel="self"/>
   <link href="http://meloonly.com/"/>
-  <updated>2013-03-02T21:11:06+08:00</updated>
+  <updated>2013-03-02T21:22:28+08:00</updated>
   <id>http://meloonly.com/</id>
   <author>
     <name><![CDATA[meloonly]]></name>
@@ -18,8 +18,7 @@
     <link href="http://meloonly.com/blog/2012/07/31/a-href/"/>
     <updated>2012-07-31T21:08:00+08:00</updated>
     <id>http://meloonly.com/blog/2012/07/31/a-href</id>
-    <content type="html"><![CDATA[<p>http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</p>
-
+    <content type="html"><![CDATA[<p><a href="http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0">http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</a></p>
 
 <p>看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答，还是狠有争论的，毕竟这个问题太常见了，平常写代码的时候基本都会遇到吧。总结一下文章中的观点。</p>
 
