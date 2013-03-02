@@ -1,0 +1,31 @@
+---
+layout: post
+title: "a标签之href"
+date: 2012-07-31 21:08
+comments: true
+categories: 
+---
+
+<p>http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</p>
+<p>看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答，还是狠有争论的，毕竟这个问题太常见了，平常写代码的时候基本都会遇到吧。总结一下文章中的观点。</p>
+<p>基本上两种写法：</p>
+<p><em>第一种是</em></p>
+<p><strong>&lt;a href="#" onclick="doSomething()"&gt;click&lt;/a&gt;</strong></p>
+<p><em>第二种是</em></p>
+<p><strong>&lt;a href="javascript:void(0)" onclick="doSomething()"&gt;click&lt;/a&gt;</strong></p>
+<p>观点收集：</p>
+<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href="#"&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
+<p>当你没有指定的URI时，就不要用a标签，而是用button。而且也不应该写onclick，而应该绑事件写，所谓不唐突的Javascript。<em>这个比较赞同。</em></p>
+<p>在使用href=“#”时，不可避免得会使用如下代码</p>
+<pre>function doSomething() {
+    //Some code
+    return false;
+}</pre>
+<p>因为在&lt;a&gt;中，如果有onclick属性，那它一定是要返回true或者是false的，如果是true则继续触发href的内容，如果是false就不会触发href的内容，当然，这是在不禁用Javascript的情况下。所以不能忘记写return false。而且当onclick的事件函数有异常没执行完的时候，是不会执行到return true或者false的，所以开发者还需要处理函数中的异常来确保最后return true或者false的执行。使用javascript:void(0)就不会有上述烦恼。<em>这是回答中赞同数最多的一个答案。</em></p>
+<p>更有人觉得连href都可以不要了，而用css来补全默认的hover。比如：</p>
+<pre><code>&lt;a class="cancel-action"&gt;Cancel this action&lt;/a&gt;</code></pre>
+<p>css</p>
+<pre><code>a {cursor: pointer; color: blue; } a:hover,a.hover { text-decoration: underline; }</code></pre>
+<p>然后再给a标签绑定onclick事件。不过缺少href属性的a标签会失去TAB键导航，而且在IE6和IE7下不识别a:hover样式，还需要手动写js兼容。</p>
+<p>最后都提到了浏览器Javascript被禁用的情况，那还是只能写在href中，而且只能触发href了，onclick是不会有反应的。</p>
+
