@@ -3,5 +3,6 @@ layout: post
 title: "post hi"
 date: 2013-01-20 20:23
 comments: true
-categories: 
+categories:
+external-url:"http://www.trip8080.com/" 
 ---
