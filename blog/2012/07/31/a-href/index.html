@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>a标签之href - I konw I know</title>
+  <meta name="author" content="meloonly">
+
+  
+  <meta name="description" content="http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0 看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://meloonly.com/blog/2012/07/31/a-href/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="I konw I know" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">I konw I know</a></h1>
+  
+    <h2>justice will be done.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:meloonly.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">A标签之href</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T21:08:00+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</p>
+
+
+<p>看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答，还是狠有争论的，毕竟这个问题太常见了，平常写代码的时候基本都会遇到吧。总结一下文章中的观点。</p>
+
+
+<p>基本上两种写法：</p>
+
+
+<p><em>第一种是</em></p>
+
+
+<p><strong>&lt;a href=&#8221;#&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+
+
+<p><em>第二种是</em></p>
+
+
+<p><strong>&lt;a href=&#8221;javascript:void(0)&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+
+
+<p>观点收集：</p>
+
+
+<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href=&#8221;#&#8221;&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
+
+
+<p>当你没有指定的URI时，就不要用a标签，而是用button。而且也不应该写onclick，而应该绑事件写，所谓不唐突的Javascript。<em>这个比较赞同。</em></p>
+
+
+<p>在使用href=“#”时，不可避免得会使用如下代码</p>
+
+
+<pre>function doSomething() {
+    //Some code
+    return false;
+}</pre>
+
+
+<p>因为在&lt;a&gt;中，如果有onclick属性，那它一定是要返回true或者是false的，如果是true则继续触发href的内容，如果是false就不会触发href的内容，当然，这是在不禁用Javascript的情况下。所以不能忘记写return false。而且当onclick的事件函数有异常没执行完的时候，是不会执行到return true或者false的，所以开发者还需要处理函数中的异常来确保最后return true或者false的执行。使用javascript:void(0)就不会有上述烦恼。<em>这是回答中赞同数最多的一个答案。</em></p>
+
+
+<p>更有人觉得连href都可以不要了，而用css来补全默认的hover。比如：</p>
+
+
+<pre><code>&lt;a class="cancel-action"&gt;Cancel this action&lt;/a&gt;</code></pre>
+
+
+<p>css</p>
+
+
+<pre><code>a {cursor: pointer; color: blue; } a:hover,a.hover { text-decoration: underline; }</code></pre>
+
+
+<p>然后再给a标签绑定onclick事件。不过缺少href属性的a标签会失去TAB键导航，而且在IE6和IE7下不识别a:hover样式，还需要手动写js兼容。</p>
+
+
+<p>最后都提到了浏览器Javascript被禁用的情况，那还是只能写在href中，而且只能触发href了，onclick是不会有反应的。</p>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">meloonly</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-31T21:08:00+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://meloonly.com/blog/2012/07/31/a-href/" data-via="" data-counturl="http://meloonly.com/blog/2012/07/31/a-href/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/22/cononstructors/" title="Previous Post: [译]JS构造器">&laquo; [译]JS构造器</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/31/a-href/">a标签之href</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/22/cononstructors/">[译]JS构造器</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/22/ecmascript-equality-operators/">[译]等运算符</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/09/null-and-undefined/">null&amp;undefined</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - meloonly -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

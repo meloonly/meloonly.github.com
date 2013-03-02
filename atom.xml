@@ -4,7 +4,7 @@
   <title><![CDATA[I konw I know]]></title>
   <link href="http://meloonly.com/atom.xml" rel="self"/>
   <link href="http://meloonly.com/"/>
-  <updated>2013-03-02T20:27:09+08:00</updated>
+  <updated>2013-03-02T21:11:06+08:00</updated>
   <id>http://meloonly.com/</id>
   <author>
     <name><![CDATA[meloonly]]></name>
@@ -12,5 +12,531 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[a标签之href]]></title>
+    <link href="http://meloonly.com/blog/2012/07/31/a-href/"/>
+    <updated>2012-07-31T21:08:00+08:00</updated>
+    <id>http://meloonly.com/blog/2012/07/31/a-href</id>
+    <content type="html"><![CDATA[<p>http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</p>
+
+
+<p>看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答，还是狠有争论的，毕竟这个问题太常见了，平常写代码的时候基本都会遇到吧。总结一下文章中的观点。</p>
+
+
+<p>基本上两种写法：</p>
+
+
+<p><em>第一种是</em></p>
+
+
+<p><strong>&lt;a href=&#8221;#&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+
+
+<p><em>第二种是</em></p>
+
+
+<p><strong>&lt;a href=&#8221;javascript:void(0)&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+
+
+<p>观点收集：</p>
+
+
+<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href=&#8221;#&#8221;&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
+
+
+<p>当你没有指定的URI时，就不要用a标签，而是用button。而且也不应该写onclick，而应该绑事件写，所谓不唐突的Javascript。<em>这个比较赞同。</em></p>
+
+
+<p>在使用href=“#”时，不可避免得会使用如下代码</p>
+
+
+<pre>function doSomething() {
+    //Some code
+    return false;
+}</pre>
+
+
+<p>因为在&lt;a&gt;中，如果有onclick属性，那它一定是要返回true或者是false的，如果是true则继续触发href的内容，如果是false就不会触发href的内容，当然，这是在不禁用Javascript的情况下。所以不能忘记写return false。而且当onclick的事件函数有异常没执行完的时候，是不会执行到return true或者false的，所以开发者还需要处理函数中的异常来确保最后return true或者false的执行。使用javascript:void(0)就不会有上述烦恼。<em>这是回答中赞同数最多的一个答案。</em></p>
+
+
+<p>更有人觉得连href都可以不要了，而用css来补全默认的hover。比如：</p>
+
+
+<pre><code>&lt;a class="cancel-action"&gt;Cancel this action&lt;/a&gt;</code></pre>
+
+
+<p>css</p>
+
+
+<pre><code>a {cursor: pointer; color: blue; } a:hover,a.hover { text-decoration: underline; }</code></pre>
+
+
+<p>然后再给a标签绑定onclick事件。不过缺少href属性的a标签会失去TAB键导航，而且在IE6和IE7下不识别a:hover样式，还需要手动写js兼容。</p>
+
+
+<p>最后都提到了浏览器Javascript被禁用的情况，那还是只能写在href中，而且只能触发href了，onclick是不会有反应的。</p>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译]JS构造器]]></title>
+    <link href="http://meloonly.com/blog/2012/07/22/cononstructors/"/>
+    <updated>2012-07-22T21:04:00+08:00</updated>
+    <id>http://meloonly.com/blog/2012/07/22/cononstructors</id>
+    <content type="html"><![CDATA[<p>“在JS中每一个对象都有一个构造器属性，它指向初始化该对象的构造函数”</p>
+
+<p>这听起来不错，构造器就像java中的静态类一样，甚至连new Constructor()语法都一样。如下：</p>
+
+<pre> function MyConstructor() {}
+ var myobject = new MyConstructor();
+ myobject.constructor == MyConstructor;     // true</pre>
+
+
+<p>但是life isn&#8217;t that simple（life&#8217;s a struggle - -）:</p>
+
+<pre>function MyConstructor() {}
+MyConstructor.prototype = {};
+var myobject = new MyConstructor();
+myobject.constructor == MyConstructor;  // false</pre>
+
+
+<p>why？下面有一些定义</p>
+
+<p><strong>对象和方法：</strong></p>
+
+<p>JS中的对象就是与属性的集合，你可以get或者set它。JS不存在类的概念。</p>
+
+<p>在JS中函数是第一类对象。方法=作为属性的函数。</p>
+
+<p><strong>原型：</strong></p>
+
+<p>对象的原型其实是一种内部（internal）属性，“[[Prototype]]”指向这个属性（<a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">Ecma-262</a>）。换句话说，obj.<span style="font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace; font-size: x-small;"><span style="line-height: normal;">prototype</span></span> 并不就是对象obj的[[Prototype]]属性。Ecma标准没有提供任何方法来从一个对象中获得这个[[Prototype]]属性。</p>
+
+<p>JS对象可以将一些属性放在[[Prototype]]中。（而且[[Prototype]]可以做相同的事情,all the way up to Object.prototype）。</p>
+
+<p><strong>属性查找：</strong></p>
+
+<p>当一个对象的‘propname’属性被访问时，系统就会检查这个对象是不是含有一个叫‘propname’的属性。如果这个属性不存在，那么就会去找这个对象的[[Prototype]]是否存在那个属性，递归下去。</p>
+
+<p>这意味着对象如果共享一个[[Prototype]]，那么[[Prototype]]上的属性也被共享。</p>
+
+<p>当一个对象被设置了‘propname’属性，这个属性就存在于对象中，而不会去管这个对象的[[Prototype]]链。</p>
+
+<p>“[[Prototype]]”是当构造函数被调用时通过构造函数上的“prototype”属性设置的。</p>
+
+<p>&nbsp;</p>
+
+<p>图解：</p>
+
+<p>有关prototype和[[Prototype]]属性就是如下所示，椭圆代表对象，箭头代表属性关系，绿色的是[[Prototype]]链。</p>
+
+<h3><a name="_1__function_myconstructor_____"></a>#1: function MyConstructor() {}</h3>
+
+
+<p style="text-align: center;"><img class="aligncenter" src="http://joost.zeekat.nl/graph1.png" alt="" width="447" height="298" /></p>
+
+
+<p>非常简单。MyConstructor的prototype属性是自动创建的，MyConstructor.prototype结果也是个对象，这个对象有个‘constructor’的属性反过来指向MyConstructor。记住：只有函数本身自带（自动创建）的prototype对象才有默认的constructor属性。</p>
+
+<p>下面说的虽然和主题不相关但能迷惑、开导你（主要是这个目的）。</p>
+
+<p>MyConstructor的[[Prototype]] 是 Function.prototype而不是MyConstructor.prototype。还需要注意的是每个对象[[Prototype]]链止于Object.prototype。</p>
+
+<p>Object.prototype的[[Prototype]]事实上是null，表明这已经是链的终点了。</p>
+
+<p>为了清晰起见，下一步我们不说[[Prototype]]链了。</p>
+
+<h1>2：MyConstructor.prototype = {}</h1>
+
+<p><img src="http://joost.zeekat.nl/graph2.png" alt="" /></p>
+
+<p>我们废除了MyConstructor.protoype最初的对象，而用一个匿名的对象“{}”取代它，则个对象没有一个constructor属性。</p>
+
+<h1>3：var myobject = new MyConstructor();</h1>
+
+<p><img src="http://joost.zeekat.nl/graph3.png" alt="" /></p>
+
+<p>这张图中，根据属性查找的规则，我们可以看到myobject.constructor委派给了Object.prototype.constructor,而它指向了Object。换言之：</p>
+
+<pre> function MyConstructor() {}
+ MyConstructor.prototype = {};
+ var myobject = new MyConstructor();
+ myobject.constructor == Object</pre>
+
+
+<p><strong>那instanceof呢？</strong></p>
+
+<p>Javascript提供了instanceof操作符用来检查某个对象的原型链。根据之前的结论你可能会认为下面会返回false。</p>
+
+<pre> function MyConstructor() {}
+ MyConstructor.prototype = {};
+ var myobject = new MyConstructor();
+ myobject instanceof MyConstructor  // true</pre>
+
+
+<p>但事实上它返回true，还可以注意到myobject委托在Object.prototype上：</p>
+
+<pre>function MyConstructor() {}
+ MyConstructor.prototype = {};
+ var myobject = new MyConstructor();
+
+ myobject instanceof Object</pre>
+
+
+<p>instanceof执行时，它检查对象构造器的prototype属性，再次检查对象的[[Prototype]]链，换言之，它不依赖于constructor属性。</p>
+
+<p>看起来很不错吧，还不够！</p>
+
+<pre> function MyConstructor() {}
+ var myobject = new MyConstructor();
+ MyConstructor.prototype = {};
+
+ [ myobject instanceof MyConstructor,     // false !
+   myobject.constructor == MyConstructor, // true !
+   myobject instanceof Object ]           // true</pre>
+
+
+<p>下图是执行过后的原型链：</p>
+
+<p><img src="http://joost.zeekat.nl/graph4.png" alt="" /></p>
+
+<p><strong>构造器不是类</strong></p>
+
+<p>在一个基于类的对象系统中，典型的，类互相继承，然后对象是那些类的实例。在两个实例间是共享的（至少理论上是的）方法和属性也是类的属性。不能共享的属性（有些语言称方法）那是对象自己的（私有）属性。</p>
+
+<p>JS的构造器不是这样的，事实上，构造器有他们自己的[[Prototype]]链，而且和它们初始化出来的对象的[[Prototype]]链完全分开。</p>
+
+<p>&nbsp;</p>
+
+<p><strong>原文：<a href="http://joost.zeekat.nl/constructors-considered-mildly-confusing.html">http://joost.zeekat.nl/constructors-considered-mildly-confusing.html</a></strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[译]等运算符]]></title>
+    <link href="http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators/"/>
+    <updated>2012-07-22T17:58:00+08:00</updated>
+    <id>http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators</id>
+    <content type="html"><![CDATA[<p>在这篇文章中将阐述一些等运算符的技术特点。</p>
+
+<p>众所周知，在ECMAScript中‘等于’是不可传递的。</p>
+
+<p><strong>不可传递的等号</strong></p>
+
+<p>就像当：</p>
+
+<blockquote>A == B
+
+B==C</blockquote>
+
+
+<p>在有些情况下这并不代表：</p>
+
+<blockquote>A==C</blockquote>
+
+
+<p>举个栗子：</p>
+
+<pre>console.log(
+  '0'== 0, // true
+   0  == '',   // true
+  '0'== ''// false
+);</pre>
+
+
+<p>再来一个：</p>
+
+<pre>var a = new String("foo");
+var b = "foo";
+var c = new String("foo");
+console.log(
+  a == b, // true
+  b == c,   // true
+  a == c // false
+);</pre>
+
+
+<div>使用&#8217;==&#8217;时会触发隐式的类型转换，所以导致了上述例子的结果。因此我们建议完全不使用‘==’，而应当用‘===’、即严格相等。另外，非严格相等‘==’被称为ECMAScript中的&#8217;邪恶部分&#8217;。<strong>严格‘===’与非严格‘==’</strong></div>
+
+
+<div>当然了，我们的主要目标（这适用于所有语言）是改善语言的抽象性，以此更容易得理解语言的结构以及减少歧义。程序员不需要记很多关于简单运算符的知识来避免歧义。</div>
+
+
+<div>最迷惑人的情况就是falsy values（就像0、&#8221;、null）和等式右边的布尔值比较的时候。在这种情况下甚至都没有ToBoolean隐式转换。为了解释清楚这个问题，我们先考虑一下在使用‘==’时的普通隐式类型转换。</div>
+
+
+<div>null和undefined在下面的情况下总是相等。</div>
+
+
+<pre>console.log(
+  null== undefined, // true
+  undefined == null// true
+);</pre>
+
+
+<div>一个比较表达式的操作数中若有一个是number类型的，那到最后（经过一些中间的类型转换）另外一个操作数总是会被转换成number类型。</div>
+
+
+<div><strong>toNumber是‘==’的强制转换</strong></div>
+
+
+<div>实际上，toNumber是‘==’主要使用到的转换。记住这个你就能很容易地确定下来隐式转换后的结果。如果两边的类型不一样，那就顺序给每一个操作数进行toNumber,直到类型都是number型，也就得到正确的结果了。</div>
+
+
+<div>先从简单的toNumber转换开始</div>
+
+
+<pre>console.log(
+   1  == "1", // true -&gt; ToNumber("1") -&gt; 1 == 1
+  "1"== 1, // the same, ToNumber("1") but for the first operand
+);</pre>
+
+
+<div>而对于对象的类型转换来说，先做toPrimitive，接着再toNumber（但除非toPrimitive没有返回一个string并且等式左边是一个string，那就不会再toNumber了，因为等式两边没有一个是number型啊没理由toNumber）。而toPrimitive依靠对象的内部方法[[DefaultValue]]，这个方法返回对象toString或者valueOf的结果。</div>
+
+
+<pre>console.log(
+  1 == {}, // false, default valueOf/toString
+  1 == ({valueOf: function() {return1;}}), // true
+  1 == ({toString: function() {return"1";}}), // true
+  1 == [1] // true, with default valueOf/toString
+);</pre>
+
+
+<div><strong>Not ToBoolean but still ToNumber</strong></div>
+
+
+<div>关于布尔型，还是那句话，没有toBoolean转换，依然是toNumber。</div>
+
+
+<div>记住true的toNumber是1，false的toNumber是0。</div>
+
+
+<pre>console.log(
+  1 == true, // true, ToNumber(true) -&gt; 1 == 1
+  0 == false, // true, ToNumber(false) -&gt; 0 == 0
+  // more interesting examples
+  "001"== true, // true, ToNumber("001") == ToNumber(true) -&gt; 1 == 1
+  "002"== true, // false, by the same conversion chain -&gt; 2 != 1
+  "0x0"== false, // true, the same (for hex-value and boolean) -&gt; 0 == 0
+  ""== false, // true,
+  " \t\r\n "== false// true
+);</pre>
+
+
+<div>在这种情况下推荐使用‘===’或者显示的toBoolean转换。</div>
+
+
+<pre>console.log(
+  !"0", // false
+  !"0x0", // false
+  "0"=== false// false
+  // etc.
+);</pre>
+
+
+<div>注意，null和undefined在使用‘==’时也是不等于false的。还是因为toNumber而不是toBoolean（当然了更不会和false严格相等了、即’===‘）。<a href="http://bclary.com/2004/11/07/#a-11.9.3">11.9.3</a> 中的第19步，</div>
+
+
+<blockquote>
+<div>If Type(<em>y</em>) is Boolean, return the result of the comparison <em>x</em> == <a href="http://bclary.com/2004/11/07/#a-9.3">ToNumber</a>(<em>y</em>).</div></blockquote>
+
+
+<div>然后返回false。</div>
+
+
+<pre>console.log(
+  null== false, // false, because null != ToNumber(false)
+  undefined == false, // false, because undefined != ToNumber(false)
+);</pre>
+
+
+<div><strong>Boolean false object is true</strong></div>
+
+
+<div>一些比较狗血的情况，当你new了一个object对象并传入false当做初始化参数，注意了，当使用Boolean函数或者是’!‘操作符都不会触发显式的类型转换。因为对于对象的toBoolean永远返回true。</div>
+
+
+<div>栗子：</div>
+
+
+<pre>var bool = newBoolean(false);
+var data = !bool ? "false": "true"; // ToBoolean won't help
+console.log(data); // "true"
+data = bool === false? "false": "true";
+console.log(data); // "true"
+console.log(
+  Boolean(bool), // true
+  !!bool // true
+);</pre>
+
+
+<div>这种情况下使用’==‘会导致toNumber</div>
+
+
+<pre>data = bool == false? "false": "true";
+console.log(data); // "false"</pre>
+
+
+<div>你也可以试试valueOf</div>
+
+
+<pre>console.log(bool.valueOf() === false); // OK, false, as with ==</pre>
+
+
+<div><strong>手动类型强制转换</strong></div>
+
+
+<div>另外，你可以手动类型转换来比较string，number和boolean型。</div>
+
+
+<pre>""+ a == ""+ b // comparing strings
++a == +b // comparing numbers
+!a == !b // comparing booleans
+// the same, but more human-read versions
+String(a) == String(b)
+Number(a) == Number(b)
+Boolean(a) == Boolean(b)</pre>
+
+
+<div>’+‘操作符调用操作数的valueOf方法，而’String‘调用toString方法。</div>
+
+
+<pre>var foo = {
+  toString: function() { return"toString"; },
+  valueOf: function() { return"valueOf"; }
+};
+console.log(""+ foo); // "valueOf"
+console.log(String(foo)); // "toString"</pre>
+
+
+<div>尽管用’+‘连接的是“”这种空字符串，但最后的结果仍旧可以得到一个string类型。</div>
+
+
+<div><strong>总是显式的使用‘===’</strong></div>
+
+
+<div>之前已经提到过，避免使用‘==’，而应当只使用‘===’。因此你必须亲自来处理所有的类型转换。比如说：</div>
+
+
+<pre>if(a === 1 || a.toString() === "1"|| a === true) {
+  ...
+}</pre>
+
+
+<div>但如果用‘==’的话，会很简短：</div>
+
+
+<pre>if(a == 1) {
+  ...
+}</pre>
+
+
+<div>对于许多程序员来说，”显式优于隐式“这种思路是赞且灵活方便的。所以在编写ECMAScript代码中应当被接受并使用。</div>
+
+
+<div><strong>‘==’的安全使用情况</strong></div>
+
+
+<div>注意，还是有不少情况下‘===’并非必要，而且不会给代码带来任何鲁棒性。在使用ECMA-262规范下的标准行为及算法时，有些情况是完全安全的。举个被广泛使用但却无用的栗子:</div>
+
+
+<pre>if(typeoffoo === "string") {
+  ...
+}</pre>
+
+
+<div>有一件主要的事情你应当知道，那就是当操作数的类型是相同的情况下，‘==’和‘===’的处理机制是完全相同的。曾经有过一个测试 <a href="http://dmitrysoshnikov.com/ecmascript/the-quiz/#q2">quiz question</a> 。如果你对这个问题有兴趣的话可以查看ES3和ES5规范的相关章节。 <a href="http://bclary.com/2004/11/07/#a-11.9.3">11.9.3 The Abstract Equality Comparison Algorithm</a> 和<a href="http://bclary.com/2004/11/07/#a-11.9.6">11.9.6 The Strict Equality Comparison Algorithm</a>.</div>
+
+
+<div><strong>总结</strong></div>
+
+
+<div>好吧，如果不打算完全不用‘==’的话，那对使用‘==’和‘===’有什么一般建议呢？</div>
+
+
+<div>还是像刚才说的，当你不确定一个函数的返回值或者一个比较变量的值，同时又要考虑类型或者是一个对象的特性，那就使用‘===’。而在其他情况下，包括完全安全的一些应用场景，比如typeof的运算结果去和string比较，这时‘==’就足够。</div>
+
+
+<div>现在还是有一些类库（太坏了，就是在说jquery和prototype）在使用严格相等去比较typeof以及其他类似的可以完全用‘==’代替并且安全的结构。当然了也有类库（dojo，mootools，sencha）意识到了这一点而不这么做。</div>
+
+
+<div>在一些细节优化上吹毛求疵的话，‘==’在比较相同类型的两个值时比‘===’来的更快。然而在现在许多的实现当中，这点差距实在是微不足道，甚至可以无视。此外，在其他一些实现中比较相等类型值‘===’甚至更快。在比较不同类型时，显然是‘===’更快。</div>
+
+
+<div>当然了，一个系统的正常运行才是更关键的。所以，就像刚才说的，当你不确定一些操作或是函数的返回类型、但又不得不去考虑他们的时候，使用‘===’吧。客观的讲，我们可以想象一个程序员在某些情况下会不记得一些完全安全的‘==’用法比如typeof，所以他可能就选择‘===’来当做唯一的比较相等的操作符，这样就不用被‘==’的那些狗血尿性所扰，而专注于其他更重要的事情上去。</div>
+
+
+<div><strong>延伸阅读</strong></div>
+
+
+<div>
+<ul>
+    <li><a href="http://bclary.com/2004/11/07/#a-9">9. Type Conversion</a>;</li>
+    <li><a href="http://bclary.com/2004/11/07/#a-11.9.3">11.9.3 The Abstract Equality Comparison Algorithm</a>;</li>
+    <li><a href="http://bclary.com/2004/11/07/#a-11.9.6">11.9.6 The Strict Equality Comparison Algorithm</a>.</li>
+</ul>
+<div>原文：<a href="http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/">http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/</a></div>
+</div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[null&amp;undefined]]></title>
+    <link href="http://meloonly.com/blog/2012/07/09/null-and-undefined/"/>
+    <updated>2012-07-09T20:43:00+08:00</updated>
+    <id>http://meloonly.com/blog/2012/07/09/null-and-undefined</id>
+    <content type="html"><![CDATA[<p>ECMA-262中的定义：</p>
+
+<p>Undefined</p>
+
+<blockquote>The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value</blockquote>
+
+
+<p>has the value undefined.</p>
+
+<p>Null</p>
+
+<blockquote>The Null type has exactly one value, called null.</blockquote>
+
+
+<p>var a;</p>
+
+<p>alert(a);//undefined</p>
+
+<p>alert(typeof a);//undefined</p>
+
+<p>alert(typeof b);//undefined</p>
+
+<p>alert(typeof undefined);//undefined</p>
+
+<p>alert(typeof null);//object  被认为是对象的占位符</p>
+
+<p>alert(null == undefined);//true    EcmaScript中认为他们是相等的。</p>
+
+<p>关于undefined</p>
+
+<p>1、声明过变量在被赋值之前的默认值是undefined。</p>
+
+<p>2、它是window的一个属性，alert(&#8216;undefined&#8217; in window);//true。</p>
+
+<p>3、可以在局部作用域中定义一个undefined达到优化目的。</p>
+
+<p>4、函数未指明返回值（无return），也是undefined。</p>
+
+<p>关于null</p>
+
+<p>The null value is a primitive value that represents the null, empty, or non-existent reference.</p>
+
+<p>EcmaScript的5种原始数值</p>
+
+<p>Null Undefined Boolean Number String</p>
+]]></content>
+  </entry>
   
 </feed>

@@ -5,15 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - I konw I know</title>
+  <title>null&amp;undefined - I konw I know</title>
   <meta name="author" content="meloonly">
 
   
-  <meta name="description" content="Blog Archive 2012 a标签之href
-Jul 31 2012 [译]JS构造器
-Jul 22 2012 [译]等运算符
-Jul 22 2012 null&amp;undefined
-Jul 09 2012 Recent Posts a标签之href [译]JS构造器 [译] &hellip;">
+  <meta name="description" content="ECMA-262中的定义： Undefined The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value has the value &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +18,7 @@ Jul 09 2012 Recent Posts a标签之href [译]JS构造器 [译] &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://meloonly.com/blog/archives/">
+  <link rel="canonical" href="http://meloonly.com/blog/2012/07/09/null-and-undefined/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,61 +63,122 @@ Jul 09 2012 Recent Posts a标签之href [译]JS构造器 [译] &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Null&amp;undefined</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T20:43:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>ECMA-262中的定义：</p>
 
-  
-  <h2>2012</h2>
+<p>Undefined</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/31/a-href/">a标签之href</a></h1>
-<time datetime="2012-07-31T21:08:00+08:00" pubdate><span class='month'>Jul</span> <span class='day'>31</span> <span class='year'>2012</span></time>
+<blockquote>The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value</blockquote>
 
 
-</article>
+<p>has the value undefined.</p>
+
+<p>Null</p>
+
+<blockquote>The Null type has exactly one value, called null.</blockquote>
 
 
+<p>var a;</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/22/cononstructors/">[译]JS构造器</a></h1>
-<time datetime="2012-07-22T21:04:00+08:00" pubdate><span class='month'>Jul</span> <span class='day'>22</span> <span class='year'>2012</span></time>
+<p>alert(a);//undefined</p>
 
+<p>alert(typeof a);//undefined</p>
 
-</article>
+<p>alert(typeof b);//undefined</p>
 
+<p>alert(typeof undefined);//undefined</p>
 
+<p>alert(typeof null);//object  被认为是对象的占位符</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/22/ecmascript-equality-operators/">[译]等运算符</a></h1>
-<time datetime="2012-07-22T17:58:00+08:00" pubdate><span class='month'>Jul</span> <span class='day'>22</span> <span class='year'>2012</span></time>
+<p>alert(null == undefined);//true    EcmaScript中认为他们是相等的。</p>
 
+<p>关于undefined</p>
 
-</article>
+<p>1、声明过变量在被赋值之前的默认值是undefined。</p>
 
+<p>2、它是window的一个属性，alert(&#8216;undefined&#8217; in window);//true。</p>
 
+<p>3、可以在局部作用域中定义一个undefined达到优化目的。</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/09/null-and-undefined/">null&amp;undefined</a></h1>
-<time datetime="2012-07-09T20:43:00+08:00" pubdate><span class='month'>Jul</span> <span class='day'>09</span> <span class='year'>2012</span></time>
+<p>4、函数未指明返回值（无return），也是undefined。</p>
 
+<p>关于null</p>
 
-</article>
+<p>The null value is a primitive value that represents the null, empty, or non-existent reference.</p>
 
+<p>EcmaScript的5种原始数值</p>
+
+<p>Null Undefined Boolean Number String</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">meloonly</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T20:43:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://meloonly.com/blog/2012/07/09/null-and-undefined/" data-via="" data-counturl="http://meloonly.com/blog/2012/07/09/null-and-undefined/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/22/ecmascript-equality-operators/" title="Next Post: [译]等运算符">[译]等运算符 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>

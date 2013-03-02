@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>I konw I know</title>
+  <title>[译]等运算符 - I konw I know</title>
   <meta name="author" content="meloonly">
 
   
-  <meta name="description" content="http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0 看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答， &hellip;">
+  <meta name="description" content="在这篇文章中将阐述一些等运算符的技术特点。 众所周知，在ECMAScript中‘等于’是不可传递的。 不可传递的等号 就像当： A == B B==C 在有些情况下这并不代表： A==C 举个栗子： console.log( '0'== 0, // true 0 == '', // true '0 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://meloonly.com/">
+  <link rel="canonical" href="http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -62,272 +62,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/07/31/a-href/">A标签之href</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-31T21:08:00+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>http://stackoverflow.com/questions/134845/href-tag-for-javascript-links-or-javascriptvoid0</p>
-
-
-<p>看了stackoverflow的这篇关于&lt;a&gt;标签中href属性和onclick属性该怎么写的问答，还是狠有争论的，毕竟这个问题太常见了，平常写代码的时候基本都会遇到吧。总结一下文章中的观点。</p>
-
-
-<p>基本上两种写法：</p>
-
-
-<p><em>第一种是</em></p>
-
-
-<p><strong>&lt;a href=&#8221;#&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
-
-
-<p><em>第二种是</em></p>
-
-
-<p><strong>&lt;a href=&#8221;javascript:void(0)&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
-
-
-<p>观点收集：</p>
-
-
-<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href=&#8221;#&#8221;&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
-
-
-<p>当你没有指定的URI时，就不要用a标签，而是用button。而且也不应该写onclick，而应该绑事件写，所谓不唐突的Javascript。<em>这个比较赞同。</em></p>
-
-
-<p>在使用href=“#”时，不可避免得会使用如下代码</p>
-
-
-<pre>function doSomething() {
-    //Some code
-    return false;
-}</pre>
-
-
-<p>因为在&lt;a&gt;中，如果有onclick属性，那它一定是要返回true或者是false的，如果是true则继续触发href的内容，如果是false就不会触发href的内容，当然，这是在不禁用Javascript的情况下。所以不能忘记写return false。而且当onclick的事件函数有异常没执行完的时候，是不会执行到return true或者false的，所以开发者还需要处理函数中的异常来确保最后return true或者false的执行。使用javascript:void(0)就不会有上述烦恼。<em>这是回答中赞同数最多的一个答案。</em></p>
-
-
-<p>更有人觉得连href都可以不要了，而用css来补全默认的hover。比如：</p>
-
-
-<pre><code>&lt;a class="cancel-action"&gt;Cancel this action&lt;/a&gt;</code></pre>
-
-
-<p>css</p>
-
-
-<pre><code>a {cursor: pointer; color: blue; } a:hover,a.hover { text-decoration: underline; }</code></pre>
-
-
-<p>然后再给a标签绑定onclick事件。不过缺少href属性的a标签会失去TAB键导航，而且在IE6和IE7下不识别a:hover样式，还需要手动写js兼容。</p>
-
-
-<p>最后都提到了浏览器Javascript被禁用的情况，那还是只能写在href中，而且只能触发href了，onclick是不会有反应的。</p>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/22/cononstructors/">[译]JS构造器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-22T21:04:00+08:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>“在JS中每一个对象都有一个构造器属性，它指向初始化该对象的构造函数”</p>
-
-<p>这听起来不错，构造器就像java中的静态类一样，甚至连new Constructor()语法都一样。如下：</p>
-
-<pre> function MyConstructor() {}
- var myobject = new MyConstructor();
- myobject.constructor == MyConstructor;     // true</pre>
-
-
-<p>但是life isn&#8217;t that simple（life&#8217;s a struggle - -）:</p>
-
-<pre>function MyConstructor() {}
-MyConstructor.prototype = {};
-var myobject = new MyConstructor();
-myobject.constructor == MyConstructor;  // false</pre>
-
-
-<p>why？下面有一些定义</p>
-
-<p><strong>对象和方法：</strong></p>
-
-<p>JS中的对象就是与属性的集合，你可以get或者set它。JS不存在类的概念。</p>
-
-<p>在JS中函数是第一类对象。方法=作为属性的函数。</p>
-
-<p><strong>原型：</strong></p>
-
-<p>对象的原型其实是一种内部（internal）属性，“[[Prototype]]”指向这个属性（<a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">Ecma-262</a>）。换句话说，obj.<span style="font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace; font-size: x-small;"><span style="line-height: normal;">prototype</span></span> 并不就是对象obj的[[Prototype]]属性。Ecma标准没有提供任何方法来从一个对象中获得这个[[Prototype]]属性。</p>
-
-<p>JS对象可以将一些属性放在[[Prototype]]中。（而且[[Prototype]]可以做相同的事情,all the way up to Object.prototype）。</p>
-
-<p><strong>属性查找：</strong></p>
-
-<p>当一个对象的‘propname’属性被访问时，系统就会检查这个对象是不是含有一个叫‘propname’的属性。如果这个属性不存在，那么就会去找这个对象的[[Prototype]]是否存在那个属性，递归下去。</p>
-
-<p>这意味着对象如果共享一个[[Prototype]]，那么[[Prototype]]上的属性也被共享。</p>
-
-<p>当一个对象被设置了‘propname’属性，这个属性就存在于对象中，而不会去管这个对象的[[Prototype]]链。</p>
-
-<p>“[[Prototype]]”是当构造函数被调用时通过构造函数上的“prototype”属性设置的。</p>
-
-<p>&nbsp;</p>
-
-<p>图解：</p>
-
-<p>有关prototype和[[Prototype]]属性就是如下所示，椭圆代表对象，箭头代表属性关系，绿色的是[[Prototype]]链。</p>
-
-<h3><a name="_1__function_myconstructor_____"></a>#1: function MyConstructor() {}</h3>
-
-
-<p style="text-align: center;"><img class="aligncenter" src="http://joost.zeekat.nl/graph1.png" alt="" width="447" height="298" /></p>
-
-
-<p>非常简单。MyConstructor的prototype属性是自动创建的，MyConstructor.prototype结果也是个对象，这个对象有个‘constructor’的属性反过来指向MyConstructor。记住：只有函数本身自带（自动创建）的prototype对象才有默认的constructor属性。</p>
-
-<p>下面说的虽然和主题不相关但能迷惑、开导你（主要是这个目的）。</p>
-
-<p>MyConstructor的[[Prototype]] 是 Function.prototype而不是MyConstructor.prototype。还需要注意的是每个对象[[Prototype]]链止于Object.prototype。</p>
-
-<p>Object.prototype的[[Prototype]]事实上是null，表明这已经是链的终点了。</p>
-
-<p>为了清晰起见，下一步我们不说[[Prototype]]链了。</p>
-
-<h1>2：MyConstructor.prototype = {}</h1>
-
-<p><img src="http://joost.zeekat.nl/graph2.png" alt="" /></p>
-
-<p>我们废除了MyConstructor.protoype最初的对象，而用一个匿名的对象“{}”取代它，则个对象没有一个constructor属性。</p>
-
-<h1>3：var myobject = new MyConstructor();</h1>
-
-<p><img src="http://joost.zeekat.nl/graph3.png" alt="" /></p>
-
-<p>这张图中，根据属性查找的规则，我们可以看到myobject.constructor委派给了Object.prototype.constructor,而它指向了Object。换言之：</p>
-
-<pre> function MyConstructor() {}
- MyConstructor.prototype = {};
- var myobject = new MyConstructor();
- myobject.constructor == Object</pre>
-
-
-<p><strong>那instanceof呢？</strong></p>
-
-<p>Javascript提供了instanceof操作符用来检查某个对象的原型链。根据之前的结论你可能会认为下面会返回false。</p>
-
-<pre> function MyConstructor() {}
- MyConstructor.prototype = {};
- var myobject = new MyConstructor();
- myobject instanceof MyConstructor  // true</pre>
-
-
-<p>但事实上它返回true，还可以注意到myobject委托在Object.prototype上：</p>
-
-<pre>function MyConstructor() {}
- MyConstructor.prototype = {};
- var myobject = new MyConstructor();
-
- myobject instanceof Object</pre>
-
-
-<p>instanceof执行时，它检查对象构造器的prototype属性，再次检查对象的[[Prototype]]链，换言之，它不依赖于constructor属性。</p>
-
-<p>看起来很不错吧，还不够！</p>
-
-<pre> function MyConstructor() {}
- var myobject = new MyConstructor();
- MyConstructor.prototype = {};
-
- [ myobject instanceof MyConstructor,     // false !
-   myobject.constructor == MyConstructor, // true !
-   myobject instanceof Object ]           // true</pre>
-
-
-<p>下图是执行过后的原型链：</p>
-
-<p><img src="http://joost.zeekat.nl/graph4.png" alt="" /></p>
-
-<p><strong>构造器不是类</strong></p>
-
-<p>在一个基于类的对象系统中，典型的，类互相继承，然后对象是那些类的实例。在两个实例间是共享的（至少理论上是的）方法和属性也是类的属性。不能共享的属性（有些语言称方法）那是对象自己的（私有）属性。</p>
-
-<p>JS的构造器不是这样的，事实上，构造器有他们自己的[[Prototype]]链，而且和它们初始化出来的对象的[[Prototype]]链完全分开。</p>
-
-<p>&nbsp;</p>
-
-<p><strong>原文：<a href="http://joost.zeekat.nl/constructors-considered-mildly-confusing.html">http://joost.zeekat.nl/constructors-considered-mildly-confusing.html</a></strong></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/22/ecmascript-equality-operators/">[译]等运算符</a></h1>
+      <h1 class="entry-title">[译]等运算符</h1>
     
     
       <p class="meta">
@@ -350,7 +90,7 @@ myobject.constructor == MyConstructor;  // false</pre>
   </header>
 
 
-  <div class="entry-content"><p>在这篇文章中将阐述一些等运算符的技术特点。</p>
+<div class="entry-content"><p>在这篇文章中将阐述一些等运算符的技术特点。</p>
 
 <p>众所周知，在ECMAScript中‘等于’是不可传递的。</p>
 
@@ -613,22 +353,16 @@ console.log(String(foo)); // "toString"</pre>
 </div>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/09/null-and-undefined/">Null&amp;undefined</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">meloonly</span></span>
+
+      
 
 
 
@@ -640,71 +374,34 @@ console.log(String(foo)); // "toString"</pre>
   
 
 
-<time datetime="2012-07-09T20:43:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
-        
-      </p>
+<time datetime="2012-07-22T17:58:00+08:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>ECMA-262中的定义：</p>
-
-<p>Undefined</p>
-
-<blockquote>The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value</blockquote>
-
-
-<p>has the value undefined.</p>
-
-<p>Null</p>
-
-<blockquote>The Null type has exactly one value, called null.</blockquote>
-
-
-<p>var a;</p>
-
-<p>alert(a);//undefined</p>
-
-<p>alert(typeof a);//undefined</p>
-
-<p>alert(typeof b);//undefined</p>
-
-<p>alert(typeof undefined);//undefined</p>
-
-<p>alert(typeof null);//object  被认为是对象的占位符</p>
-
-<p>alert(null == undefined);//true    EcmaScript中认为他们是相等的。</p>
-
-<p>关于undefined</p>
-
-<p>1、声明过变量在被赋值之前的默认值是undefined。</p>
-
-<p>2、它是window的一个属性，alert(&#8216;undefined&#8217; in window);//true。</p>
-
-<p>3、可以在局部作用域中定义一个undefined达到优化目的。</p>
-
-<p>4、函数未指明返回值（无return），也是undefined。</p>
-
-<p>关于null</p>
-
-<p>The null value is a primitive value that represents the null, empty, or non-existent reference.</p>
-
-<p>EcmaScript的5种原始数值</p>
-
-<p>Null Undefined Boolean Number String</p>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators/" data-via="" data-counturl="http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/09/null-and-undefined/" title="Previous Post: null&amp;undefined">&laquo; null&amp;undefined</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/22/cononstructors/" title="Next Post: [译]JS构造器">[译]JS构造器 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -737,6 +434,7 @@ console.log(String(foo)); // "toString"</pre>
 
   
 </aside>
+
 
     </div>
   </div>

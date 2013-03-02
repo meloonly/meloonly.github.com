@@ -1,12 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://meloonly.com/blog/2012/07/09/null-and-undefined/</loc>
+        <lastmod>2013-03-02T20:53:19+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://meloonly.com/blog/2012/07/22/ecmascript-equality-operators/</loc>
+        <lastmod>2013-03-02T21:07:08+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://meloonly.com/blog/2012/07/22/cononstructors/</loc>
+        <lastmod>2013-03-02T21:10:31+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://meloonly.com/blog/2012/07/31/a-href/</loc>
+        <lastmod>2013-03-02T21:09:58+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://meloonly.com/blog/archives/</loc>
-        <lastmod>2013-01-20T20:12:10+08:00</lastmod>
+        <lastmod>2013-03-02T21:10:31+08:00</lastmod>
     </url>
     <url>
         <loc>http://meloonly.com/</loc>
-        <lastmod>2013-01-20T20:12:10+08:00</lastmod>
+        <lastmod>2013-03-02T21:10:31+08:00</lastmod>
     </url>
     <url>
         <loc>http://meloonly.com/robots.txt</loc>
