@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Melo's blog]]></title>
-  <link href="http://meloonly.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Javascript | Melo's blog]]></title>
+  <link href="http://meloonly.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://meloonly.com/"/>
   <updated>2013-05-18T13:26:23+08:00</updated>
   <id>http://meloonly.com/</id>
@@ -29,19 +29,19 @@
 <p><em>第一种是</em></p>
 
 
-<p><strong>&lt;a href=&#8221;#&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+<p><strong>&lt;a href="#" onclick="doSomething()"&gt;click&lt;/a&gt;</strong></p>
 
 
 <p><em>第二种是</em></p>
 
 
-<p><strong>&lt;a href=&#8221;javascript:void(0)&#8221; onclick=&#8221;doSomething()&#8221;&gt;click&lt;/a&gt;</strong></p>
+<p><strong>&lt;a href="javascript:void(0)" onclick="doSomething()"&gt;click&lt;/a&gt;</strong></p>
 
 
 <p>观点收集：</p>
 
 
-<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href=&#8221;#&#8221;&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
+<p>当页面中还有&lt;base&gt;标签的时候，就会出现问题。举例：当&lt;head&gt;中有&lt;base href=“a.html”&gt;的时候，&lt;a href="#"&gt;click&lt;/a&gt;的#就会跳出当前页面而去base中的url。<em>好像这样写的情况不多，我没遇到过。</em></p>
 
 
 <p>当你没有指定的URI时，就不要用a标签，而是用button。而且也不应该写onclick，而应该绑事件写，所谓不唐突的Javascript。<em>这个比较赞同。</em></p>
@@ -95,7 +95,7 @@
  myobject.constructor == MyConstructor;     // true</pre>
 
 
-<p>但是life isn&#8217;t that simple（life&#8217;s a struggle - -）:</p>
+<p>但是life isn't that simple（life's a struggle - -）:</p>
 
 <pre>function MyConstructor() {}
 MyConstructor.prototype = {};
@@ -259,13 +259,13 @@ console.log(
 );</pre>
 
 
-<div>使用&#8217;==&#8217;时会触发隐式的类型转换，所以导致了上述例子的结果。因此我们建议完全不使用‘==’，而应当用‘===’、即严格相等。另外，非严格相等‘==’被称为ECMAScript中的&#8217;邪恶部分&#8217;。<strong>严格‘===’与非严格‘==’</strong></div>
+<div>使用'=='时会触发隐式的类型转换，所以导致了上述例子的结果。因此我们建议完全不使用‘==’，而应当用‘===’、即严格相等。另外，非严格相等‘==’被称为ECMAScript中的'邪恶部分'。<strong>严格‘===’与非严格‘==’</strong></div>
 
 
 <div>当然了，我们的主要目标（这适用于所有语言）是改善语言的抽象性，以此更容易得理解语言的结构以及减少歧义。程序员不需要记很多关于简单运算符的知识来避免歧义。</div>
 
 
-<div>最迷惑人的情况就是falsy values（就像0、&#8221;、null）和等式右边的布尔值比较的时候。在这种情况下甚至都没有ToBoolean隐式转换。为了解释清楚这个问题，我们先考虑一下在使用‘==’时的普通隐式类型转换。</div>
+<div>最迷惑人的情况就是falsy values（就像0、''、null）和等式右边的布尔值比较的时候。在这种情况下甚至都没有ToBoolean隐式转换。为了解释清楚这个问题，我们先考虑一下在使用‘==’时的普通隐式类型转换。</div>
 
 
 <div>null和undefined在下面的情况下总是相等。</div>
@@ -522,7 +522,7 @@ console.log(String(foo)); // "toString"</pre>
 
 <p>1、声明过变量在被赋值之前的默认值是undefined。</p>
 
-<p>2、它是window的一个属性，alert(&#8216;undefined&#8217; in window);//true。</p>
+<p>2、它是window的一个属性，alert('undefined' in window);//true。</p>
 
 <p>3、可以在局部作用域中定义一个undefined达到优化目的。</p>
 
