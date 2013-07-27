@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>null&amp;undefined - Melo's blog</title>
+  <title>cross-domain-post - Melo's blog</title>
   <meta name="author" content="meloonly">
 
   
-  <meta name="description" content="ECMA-262中的定义： Undefined The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value has the value &hellip;">
+  <meta name="description" content="跨域post请求 这是很久以前遇到的问题，还是在上一家公司的时候，在为实现某一个业务场景时想到的一个办法。之前也看了不少相关的文章，目前来看，跨域的主流做法都是jsonp请求，原理就是动态插入一个script标签，依靠script标签的src来实现跨域请求。但这样的做法都是get请求， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://meloonly.com/blog/2012/07/09/null-and-undefined/">
+  <link rel="canonical" href="http://meloonly.com/blog/2013/07/27/cross-domain-post/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -67,7 +67,7 @@
   
   <header>
     
-      <h1 class="entry-title">Null&amp;undefined</h1>
+      <h1 class="entry-title">Cross-domain-post</h1>
     
     
       <p class="meta">
@@ -83,7 +83,7 @@
   
 
 
-<time datetime="2012-07-09T20:43:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+<time datetime="2013-07-27T22:48:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -92,51 +92,131 @@
   </header>
 
 
-<div class="entry-content"><p>ECMA-262中的定义：</p>
+<div class="entry-content"><h1>跨域post请求</h1>
 
-<p>Undefined</p>
+<hr />
 
-<blockquote>The Undefined type has exactly one value, called undefined. Any variable that has not been assigned a value</blockquote>
+<p>这是很久以前遇到的问题，还是在上一家公司的时候，在为实现某一个业务场景时想到的一个办法。之前也看了不少相关的文章，目前来看，跨域的主流做法都是jsonp请求，原理就是动态插入一个script标签，依靠script标签的src来实现跨域请求。但这样的做法都是get请求，如果需要post请求的话，这个方法就行不通了。即便现代浏览器有原生支持的postMessage API但由于要兼容IE6,7，于是考虑用其他方法实现跨域的post请求:</p>
+
+<ol>
+<li><p>原理先是在当前域下创建一个iframe，指向需要跨域的那个域名，然后完成表单提交。</p></li>
+<li><p>将提交后的返回信息保存在window.name属性里面（支持2M的数据量）。</p></li>
+<li><p>再改变这个iframe的location到当前域下，获得window.name即可。</p></li>
+</ol>
 
 
-<p>has the value undefined.</p>
+<p>主要代码：</p>
 
-<p>Null</p>
+<pre><code>//创建一个iframe
 
-<blockquote>The Null type has exactly one value, called null.</blockquote>
+var ifr = document.createElement('iframe');
+
+ifr.style.display = 'none';
 
 
-<p>var a;</p>
 
-<p>alert(a);//undefined</p>
+var onloadFn = function(){
 
-<p>alert(typeof a);//undefined</p>
+    var ifrDom = ifr.contentWindow.document;
 
-<p>alert(typeof b);//undefined</p>
+    //创建post提交的表单
 
-<p>alert(typeof undefined);//undefined</p>
+    var postForm = ifrDom.createElement('form');
 
-<p>alert(typeof null);//object  被认为是对象的占位符</p>
+    postForm.method = 'post';
 
-<p>alert(null == undefined);//true    EcmaScript中认为他们是相等的。</p>
+    postForm.action = 'http://a.example.com/';
 
-<p>关于undefined</p>
+    ifrDom.documentElement.appendChild(postForm);
 
-<p>1、声明过变量在被赋值之前的默认值是undefined。</p>
+    //创建表单中的元素
 
-<p>2、它是window的一个属性，alert(&#8216;undefined&#8217; in window);//true。</p>
+    var sourceIdElem = ifrDom.createElement('input');
 
-<p>3、可以在局部作用域中定义一个undefined达到优化目的。</p>
+    sourceIdElem.type = 'hidden';
 
-<p>4、函数未指明返回值（无return），也是undefined。</p>
+    sourceIdElem.name = 'info';
 
-<p>关于null</p>
+    sourceIdElem.value = '2';
 
-<p>The null value is a primitive value that represents the null, empty, or non-existent reference.</p>
+    postForm.appendChild(sourceIdElem);
 
-<p>EcmaScript的5种原始数值</p>
 
-<p>Null Undefined Boolean Number String</p>
+
+    //去除原先的onload方法，防止表单提交以后再一次触发原先的onload事件
+
+    if(ifr.detachEvent){
+
+        ifr.detachEvent('onload',onloadFn);
+
+    }else {
+
+        ifr.onload = function(){};
+
+    }
+
+
+
+    //绑定表单提交后返回页面的onload事件
+
+    ifr.onload = function(){
+
+        //再次重新绑定onload的原因是防止我们在替换location时又去执行旧的onload事件
+
+        ifr.onload = function(){
+
+            var timer,res;
+
+            function polling(){//轮询
+
+                try{
+
+                    res =  ifr.contentWindow.name;
+
+                }catch(ex){}
+
+                if(!res){
+
+                    return;
+
+                }else{
+
+                     clearInterval(timer);
+
+                     //获得结果
+
+                     console.log(res);
+
+                }
+
+            }
+
+            timer = setInterval(polling, 100);
+
+        }
+
+        ifr.contentWindow.location.replace('about:blank');
+
+    }
+
+    postForm.submit();
+
+}
+
+if(ifr.attachEvent){
+
+    ifr.attachEvent("onload", onloadFn);
+
+}else {
+
+    ifr.onload = onloadFn;
+
+}
+
+document.body.appendChild(ifr);
+</code></pre>
+
+<p>在服务端接收post请求以后，在返回的页面中需要将结果赋值给window.name。</p>
 </div>
 
 
@@ -159,7 +239,7 @@
   
 
 
-<time datetime="2012-07-09T20:43:00+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+<time datetime="2013-07-27T22:48:00+08:00" pubdate data-updated="true">Jul 27<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -173,7 +253,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://meloonly.com/blog/2012/07/09/null-and-undefined/" data-via="" data-counturl="http://meloonly.com/blog/2012/07/09/null-and-undefined/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://meloonly.com/blog/2013/07/27/cross-domain-post/" data-via="" data-counturl="http://meloonly.com/blog/2013/07/27/cross-domain-post/" >Tweet</a>
   
   
   
@@ -182,8 +262,8 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2012/07/31/a-href/" title="Previous Post: a标签之href">&laquo; a标签之href</a>
       
-        <a class="basic-alignment right" href="/blog/2012/07/22/ecmascript-equality-operators/" title="Next Post: [译]等运算符">[译]等运算符 &raquo;</a>
       
     </p>
   </footer>
@@ -267,8 +347,8 @@ ga('send', 'pageview');
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://meloonly.com/blog/2012/07/09/null-and-undefined/';
-        var disqus_url = 'http://meloonly.com/blog/2012/07/09/null-and-undefined/';
+        var disqus_identifier = 'http://meloonly.com/blog/2013/07/27/cross-domain-post/';
+        var disqus_url = 'http://meloonly.com/blog/2013/07/27/cross-domain-post/';
         var disqus_script = 'embed.js';
       
     (function () {

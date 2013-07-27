@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | Melo's blog]]></title>
   <link href="http://meloonly.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://meloonly.com/"/>
-  <updated>2013-05-19T06:33:57+08:00</updated>
+  <updated>2013-07-27T22:56:50+08:00</updated>
   <id>http://meloonly.com/</id>
   <author>
     <name><![CDATA[meloonly]]></name>
@@ -12,6 +12,139 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[cross-domain-post]]></title>
+    <link href="http://meloonly.com/blog/2013/07/27/cross-domain-post/"/>
+    <updated>2013-07-27T22:48:00+08:00</updated>
+    <id>http://meloonly.com/blog/2013/07/27/cross-domain-post</id>
+    <content type="html"><![CDATA[<h1>跨域post请求</h1>
+
+<hr />
+
+<p>这是很久以前遇到的问题，还是在上一家公司的时候，在为实现某一个业务场景时想到的一个办法。之前也看了不少相关的文章，目前来看，跨域的主流做法都是jsonp请求，原理就是动态插入一个script标签，依靠script标签的src来实现跨域请求。但这样的做法都是get请求，如果需要post请求的话，这个方法就行不通了。即便现代浏览器有原生支持的postMessage API但由于要兼容IE6,7，于是考虑用其他方法实现跨域的post请求:</p>
+
+<ol>
+<li><p>原理先是在当前域下创建一个iframe，指向需要跨域的那个域名，然后完成表单提交。</p></li>
+<li><p>将提交后的返回信息保存在window.name属性里面（支持2M的数据量）。</p></li>
+<li><p>再改变这个iframe的location到当前域下，获得window.name即可。</p></li>
+</ol>
+
+
+<p>主要代码：</p>
+
+<pre><code>//创建一个iframe
+
+var ifr = document.createElement('iframe');
+
+ifr.style.display = 'none';
+
+
+
+var onloadFn = function(){
+
+    var ifrDom = ifr.contentWindow.document;
+
+    //创建post提交的表单
+
+    var postForm = ifrDom.createElement('form');
+
+    postForm.method = 'post';
+
+    postForm.action = 'http://a.example.com/';
+
+    ifrDom.documentElement.appendChild(postForm);
+
+    //创建表单中的元素
+
+    var sourceIdElem = ifrDom.createElement('input');
+
+    sourceIdElem.type = 'hidden';
+
+    sourceIdElem.name = 'info';
+
+    sourceIdElem.value = '2';
+
+    postForm.appendChild(sourceIdElem);
+
+
+
+    //去除原先的onload方法，防止表单提交以后再一次触发原先的onload事件
+
+    if(ifr.detachEvent){
+
+        ifr.detachEvent('onload',onloadFn);
+
+    }else {
+
+        ifr.onload = function(){};
+
+    }
+
+
+
+    //绑定表单提交后返回页面的onload事件
+
+    ifr.onload = function(){
+
+        //再次重新绑定onload的原因是防止我们在替换location时又去执行旧的onload事件
+
+        ifr.onload = function(){
+
+            var timer,res;
+
+            function polling(){//轮询
+
+                try{
+
+                    res =  ifr.contentWindow.name;
+
+                }catch(ex){}
+
+                if(!res){
+
+                    return;
+
+                }else{
+
+                     clearInterval(timer);
+
+                     //获得结果
+
+                     console.log(res);
+
+                }
+
+            }
+
+            timer = setInterval(polling, 100);
+
+        }
+
+        ifr.contentWindow.location.replace('about:blank');
+
+    }
+
+    postForm.submit();
+
+}
+
+if(ifr.attachEvent){
+
+    ifr.attachEvent("onload", onloadFn);
+
+}else {
+
+    ifr.onload = onloadFn;
+
+}
+
+document.body.appendChild(ifr);
+</code></pre>
+
+<p>在服务端接收post请求以后，在返回的页面中需要将结果赋值给window.name。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[a标签之href]]></title>
